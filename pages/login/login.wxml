@@ -1,0 +1,11 @@
+
+<view class="login-container">
+  <view class="login-first" wx:if='{{currentPage=="login-first"}}'>
+    <input class='login-input' type='text' placeholder='用户名' bindinput="inputUsername"/>
+    <input class='login-input' type='text' placeholder='密码' password bindinput="inputPassword"/>
+    <button class="login-button"  bindtap="nav-login">登录</button>
+    <image class="login-register-slice" src="/images/loginOrRegister.png"></image>
+    <button class="wxlogin-button" bindtap="wxLogin">微信登录</button>
+
+  </view>
+</view>

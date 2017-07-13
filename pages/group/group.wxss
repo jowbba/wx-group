@@ -1,0 +1,202 @@
+Page {
+  height:100%;
+}
+/*layout*/
+#group-header {
+  height:96px;
+  padding:16px 16px 14px;
+  box-sizing:border-box;
+  border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+
+#group-header {
+  display: inline-block;
+}
+
+#group-content {
+  height: calc(100% - 96px);
+}
+
+#group-container {
+  position:relative;
+  height:100%;
+  overflow: scroll;
+  padding-bottom: 50px;
+  box-sizing: border-box;
+}
+
+#group-footer {
+  position: fixed;
+  bottom: 0px;
+  height:48px;
+  width:100%;
+  border-top: 1px solid #999;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding:0 8px;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+#group-footer image {
+  width:24px;
+  height:24px;
+  margin:0 8px 0 0;
+  opacity: .5;
+  flex-shrink: 0;
+}
+
+#group-footer image:first-of-type {
+  margin-left:8px;
+}
+
+#group-footer image:last-of-type {
+  margin-right: 8px;
+}
+
+#group-footer .text-input {
+  width: 198px;
+  height:24px;
+  line-height: 24px;
+  flex-grow:10;
+  border: 1px solid #999;
+  padding:0 10px;
+  margin-right: 8px;
+}
+
+#group-footer .submit {
+  height:30px;
+  line-height: 30px;
+  width:100px;
+  text-align: center;
+  background:#58bb20;
+  color:#fff;
+  margin-left:10px;
+}
+/*pin*/
+#group-header view {
+  display: inline-block;
+  height: 80px;
+  line-height: 80px;
+}
+
+.addpin-button {
+  width:24px;
+  
+}
+
+/*commit*/
+.commit-container {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 16px 0;
+  padding:0 16px;
+}
+
+.commit-avatar{
+  width:36px;
+  height:36px;
+  flex-shrink:0;
+  border-radius: 50%;
+}
+
+.commit-main {
+  display: flex;
+  flex-flow: column nowrap;
+  margin-left:16px;
+  overflow: hidden;
+  width: calc(100% - 68px);
+}
+
+.commit-updateTime {
+  width:100%;
+  margin-top:32px;
+  text-align: center;
+  color: #b2b2b2;
+  font-size:12px; 
+}
+
+.commit-name {
+  color:#888;
+  font-size:14px;
+  margin-bottom: 5px;
+}
+
+.commit-content {
+  overflow: hidden;
+}
+
+/*commit-text*/
+.commit-content.text {
+  font-size:18px;
+}
+/*commit-phtot*/
+.commit-content.photo {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.commit-content.photo image, .view-more {
+  width:74px;
+  height: 74px;
+  margin:0 2px 2px 0;
+  flex-basis:74px;
+  position: relative;
+}
+
+.view-more view {
+  text-align: center;
+  font-size:26px;
+  width:100%;
+  line-height: 80px;
+  color: #fff;
+  position: absolute;
+  top:0px;
+  left: 0px;
+}
+
+.view-more image{
+  width: 100%;
+  height: 100%;
+  filter:blur(2px);
+}
+
+.photo-name {
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.photo-name text:first-child{
+  color: #03a9f4
+}
+
+.photo-name text:last-child {
+  color: #b2b2b2;
+}
+/*commit-vioce*/
+
+.vioce-playing {
+  width: 10px;
+  height: 10px;
+  background-color: #58bb20;
+}
+
+.vioce-stoped {
+  width: 0px;
+  height: 0px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 10px solid #58bb20;
+  
+}
+
+
+
+

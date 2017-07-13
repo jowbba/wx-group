@@ -1,0 +1,8 @@
+<!--pages/commitList/commitList.wxml-->
+<view class="page-frame">
+  <view id="box-list">
+      <block wx:if='{{commit.attributes.type == "photo"}}' wx:for='{{commit.attributes.content}}' wx:key='*this' wx:for-item='url'>
+        <image src="{{url}}" data-url='{{url}}' data-id='{{commit.id}}' bindtap="previewImage"/>
+      </block>
+  </view>
+</view>

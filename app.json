@@ -1,0 +1,52 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/index/index",
+    "pages/box/box",
+    "pages/myBox/myBox",
+    "pages/group/group",
+    "pages/logs/logs",
+    "pages/login/login",
+    "pages/commit/commit",
+    "pages/commitList/commitList"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "wisnuc",
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": true
+  },
+  "tabBar": {
+    "color":"#b2b2b2",
+    "selectedColor":"#353535",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/home/home",
+        "iconPath": "images/box.png",
+        "selectedIconPath": "images/box.png",
+        "text": "群"
+      },
+      {
+        "pagePath": "pages/myBox/myBox",
+        "iconPath": "images/group.png",
+        "selectedIconPath": "images/group.png",
+        "text": "盒子"
+      }
+    ]
+  },
+  "debug": false,
+  "networkTimeout": {
+    "request": 200000,
+    "connectSocket": 200000,
+    "uploadFile": 200000,
+    "downloadFile": 200000
+  }
+}

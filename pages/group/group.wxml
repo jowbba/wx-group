@@ -1,0 +1,69 @@
+<view id="group-container">
+  <!--group header-->
+  <scroll-view id="group-header" scroll-x='true' >
+    <view class="addpin-button">+</view>
+    <view class="">123</view>
+    <view class="">456</view>
+    <view class="">789</view>
+  </scroll-view>
+
+  <!--group content-->
+  <scroll-view id="group-content" scroll-y scroll-with-animation enable-back-to-top scroll-into-view='toView{{toView}}' scroll-top="0">
+    <block wx:for='{{commits}}' wx:key='id'>
+      <view class="commit-container" id='toView{{item.id}}'>
+        <template is="commit" data='{{id:item.id,url:item.attributes.user.userInfo.avatarUrl,attr:item.attributes,updateTime:item.updateTime}}' />
+      </view>
+    </block>
+    <view id='bottom'></view>
+  </scroll-view>
+
+  <!--group footer-->
+  <view id="group-footer">
+    <image class="record" src="../../images/imc.png" mode='aspectFit' bindtouchstart="startRecord" bindtouchend="stopRecord"></image>
+    <input class="text-input" bindinput="input"></input>
+    <image wx:if='{{!inputValue}}' class="camera" src="../../images/camera.png" mode='aspectFit' bindtap="openCamera"></image>
+    <image wx:if='{{!inputValue}}' class="photo" src="../../images/photo.png" mode='aspectFit'></image>
+    <view wx:if='{{inputValue}}' class="submit" bindtap="commitText">发送</view>
+  </view>
+
+  <!--template commit-->
+  <template name='commit'>
+    <image class='commit-avatar' src="{{url}}"></image>
+    <view class="commit-main">
+      <view class="commit-name">{{attr.user.username}}</view>
+      <template is='{{attr.type}}' data='{{id:id,attr:attr}}'></template>
+    </view>
+    <text class='commit-updateTime'>{{updateTime}}</text>
+  </template>
+
+  <!--template text-->
+  <template name='text'>
+    <text class="commit-content text">{{attr.description}}</text>
+  </template>
+
+  <!--template photo-->
+  <template name='photo'>
+    <view class="commit-content photo">
+      <block wx:for='{{attr.content}}' wx:key='*this'>
+        <image src="{{item}}" wx:if='{{(attr.content.length<7||(index<5))}}' data-url='{{item}}' data-id='{{id}}' bindtap="previewImage" />
+        <view class="view-more" wx:if='{{index==5&&attr.content.length>6}}'>
+          <image src="{{item}}" data-id='{{id}}' />
+          <view data-id='{{id}}' bindtap="openCommit">+{{attr.content.length - 5}}</view>
+        </view>
+      </block>
+    </view>
+    <view class="photo-name">
+      <text data-id='{{id}}' bindtap="openBox">#{{attr.box.name}}</text>
+      <text>中加入{{attr.content.length}}个文件</text>
+    </view>
+  </template>
+
+  <!--template record-->
+  <template name='record'>
+    <view class="commit-content record" bindtap="controlVoice" data-url='{{attr.content[0]}}' data-id='{{id}}'>
+      <view class="vioce-playing" wx:if='{{attr.play}}' />
+      <view class="vioce-stoped" wx:if='{{!attr.play}}' />
+    </view>
+  </template>
+
+</view>

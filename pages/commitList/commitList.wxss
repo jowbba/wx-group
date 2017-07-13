@@ -1,0 +1,28 @@
+/* pages/commitList/commitList.wxss */
+Page {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  padding-top:1vw;
+}
+
+#box-list {
+  width: 100%;
+  display: block;
+  padding: 0 1vw;
+}
+
+#box-list {
+  width: 100%;
+  display: block;
+  padding: 0 1vw;
+}
+
+#box-list image {
+  width: 32vw;
+  height: 32vw;
+}
+
+#box-list image:nth-child(3n-1) {
+  margin:0 1vw;
+}

@@ -1,0 +1,16 @@
+<!--pages/box/box.wxml-->
+<view class="page-frame">
+
+  <view id="box-cover">
+  
+  </view>
+
+  <view id="box-list">
+    <block wx:for='{{commits}}' wx:key='id' wx:for-item='commit'>
+      <block wx:if='{{commit.attributes.type == "photo"}}' wx:for='{{commit.attributes.content}}' wx:key='*this' wx:for-item='url'>
+        <image src="{{url}}" data-url='{{url}}' data-id='{{commit.id}}' bindtap="previewImage"/>
+      </block>
+    </block>
+  </view>
+
+</view>
