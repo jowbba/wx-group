@@ -22,11 +22,28 @@ Page {
   padding: 0 1vw;
 }
 
-#box-list image {
+#box-list .image-container {
   width: 32vw;
   height: 32vw;
+  display: inline-block;
+  position: relative;
 }
 
-#box-list image:nth-child(3n-1) {
+#box-list .image-container:nth-child(3n-1) {
   margin:0 1vw;
+}
+
+#box-list image {
+  width: 100%;
+  height: 100%;
+}
+
+#box-list .image-select-pointer {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  top: 10px;
+  left: 10px;
+  border-radius: 50%;
+  border: 1px solid #999;
 }

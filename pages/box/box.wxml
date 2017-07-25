@@ -8,7 +8,10 @@
   <view id="box-list">
     <block wx:for='{{commits}}' wx:key='id' wx:for-item='commit'>
       <block wx:if='{{commit.attributes.type == "photo"}}' wx:for='{{commit.attributes.content}}' wx:key='*this' wx:for-item='url'>
-        <image src="{{url}}" data-url='{{url}}' data-id='{{commit.id}}' bindtap="previewImage"/>
+        <view class="image-container">
+          <image src="{{url}}" data-url='{{url}}' data-id='{{commit.id}}' bindtouchstart="touchStart" bindtouchend="touchEnd" catchlongtap="longtap"/>
+          <view class="image-select-pointer"></view>
+        </view>
       </block>
     </block>
   </view>

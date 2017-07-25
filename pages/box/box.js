@@ -9,7 +9,8 @@ Page({
    */
   data: {
     box: {},
-    commits: []
+    commits: [],
+    setting:false
   },
 
   /**
@@ -22,7 +23,7 @@ Page({
       this.setData({box:boxInfor}) 
       return this.getBoxCommits(boxid)
     }).then(commits => {
-      let result = commits.map(item => Object.assign({},item))
+      let result = commits.map(item => Object.assign({},item,{check:false}))
       console.log(result)
       this.setData({ commits: result})
       console.log(this)
@@ -35,7 +36,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-  
+    this.stamp = 0
   },
 
   /**
@@ -109,7 +110,6 @@ Page({
   },
 
   previewImage:function(e) {
-    console.log(e.currentTarget)
     let commitID = e.currentTarget.dataset.id
     let url = e.currentTarget.dataset.url
     let commit = this.data.commits.find(item => item.id == commitID)
@@ -119,5 +119,23 @@ Page({
       urls: urls,
       current:url
     })
+  },
+
+  longtap: function(e) {
+    console.log('long tap',e)
+    this.setData({setting: true})
+  },
+
+  touchStart: function(e) {
+    console.log('touch start', e)
+    this.stamp = e.timeStamp
+  },
+
+  touchEnd: function(e) {
+    console.log('touch end', e)
+    let time = e.timeStamp - this.stamp
+    console.log(time)
+    if (time < 350 ) this.previewImage(e)
+    
   }
 })

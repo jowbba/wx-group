@@ -9,11 +9,12 @@ Page({
    */
   data: {
     group:{},
+    users: [],
+    commits: [],
     inputValue:'',
-    users:[],
-    commits:[],
     currentUserID:'',
-    toView:''
+    toView:'',
+    settingPin: false
   },
 
   /**
@@ -21,15 +22,14 @@ Page({
    */
   onLoad: function (options) {
     this.setData({ group: app.globalData.currentGroup})
+    console.log(this.data.group.attributes.pin)
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    wx.setNavigationBarTitle({
-      title: this.data.group.attributes.name,
-    })
+    wx.setNavigationBarTitle({title: this.data.group.attributes.name})
     this.getUserList()
     this.setData({ currentUserID: user.id})
   },
@@ -43,12 +43,8 @@ Page({
       let commits = this.data.commits
       if (!commits.length) return
       let lastID = commits[commits.length - 1].id
-      console.log(lastID)
-    
-        this.setData({ toView: lastID })
-
+      this.setData({ toView: lastID })
     })
-    
   },
 
   /**
@@ -85,10 +81,11 @@ Page({
   
   },
 
+  // 用户输入
   input:function(e) {
     this.setData({ inputValue: e.detail.value})
   },
-
+  // 提交
   commitText: function() {
     let Group = Bmob.Object.extend('Group')
     let group = new Group()
@@ -107,6 +104,7 @@ Page({
     })
   },
 
+  // 开始录音
   startRecord(e) {
     wx.startRecord({
       success:function(res){
@@ -154,11 +152,13 @@ Page({
     })
   },
 
+  //停止录音
   stopRecord(e) {
     console.log('stro',e)
     wx.stopRecord()
   },
 
+  //打开相册
   openCamera: function () {
     wx.chooseImage({
       count: 9, // 默认9
@@ -176,70 +176,7 @@ Page({
     })
   },
 
-  getCommitList: function() {
-    return new Promise((resolve,reject) => {
-      let Group = Bmob.Object.extend('Group')
-      let group = new Group()
-      group.id = this.data.group.id
-      let Commit = Bmob.Object.extend('Commit')
-      let query = new Bmob.Query('Commit')
-      query.equalTo('parent', group)
-      query.include("user")
-      query.include("box")
-      query.find({
-        success: results => {
-          let today = new Date()
-          let month = (today.getMonth() + 1).toString()
-          let day = (today.getDate()).toString()
-          if (month.length == 1) month = '0' + month
-          if (day.length == 1) day = '0' + day
-          let todayString = today.getFullYear() + '-' + month + '-' + day
-
-          results = results.map(item => {
-            if (item.attributes.type === 'record') item.attributes.play = false
-            let arr = item.updatedAt.split(' ')
-            let index = item.updatedAt.indexOf(todayString)
-            if (index == -1) item.updateTime = arr[0]
-            else item.updateTime = arr[1]
-
-            return Object.assign({}, item)
-          })
-          console.log('commit列表为：', results)
-          resolve(results)
-        },
-        error: err=> reject(err)
-      })
-    })
-  },
-  
-  getUserList: function() {
-    let arr = []
-    let users = this.data.group.attributes.member
-    let count = 0
-    let User = Bmob.Object.extend('_User')
-    let query = new Bmob.Query(User)
-    
-    var find = id => new Promise((resolve, reject) => {
-      query.get(id, {
-        success: result => {
-          arr.push(result)
-          resolve(result)
-        },
-        error: (object, error) => reject(error)
-      })
-    })
-
-    users.forEach(item => {
-      find(item).then(data => {
-        count++
-        if (count == users.length) {
-          this.setData({ users: arr })
-          console.log('用户列表为', this.data.users)
-        }
-      })
-    })
-  },
-
+  //查看照片
   previewImage:function(e) {
     let dataset = e.currentTarget.dataset
     let url = dataset.url
@@ -252,6 +189,7 @@ Page({
     })
   },
 
+  //播放/暂停 音频
   controlVoice: function(e) {
     let dataset = e.currentTarget.dataset
     let url = dataset.url
@@ -288,6 +226,7 @@ Page({
     
   },
 
+  //打开相册
   openBox: function(e) {
     let id = e.currentTarget.dataset.id
     let commit = this.data.commits.find(item => item.id == id)
@@ -296,10 +235,102 @@ Page({
       url: '../box/box?id=' + boxid,
     })
   },
+
+  //打开单次用户提交
   openCommit: function(e) {
     console.log(e.currentTarget.dataset.id)
     wx.navigateTo({
       url: '../commitList/commitList?id=' + e.currentTarget.dataset.id,
     })
+  },
+
+  //跳转至群设置
+  navToSetting: function(e) {
+    wx.navigateTo({
+      url: '../groupSetting/groupSetting?id=' + this.data.group.id,
+    })
+  },
+
+  //获取提交列表
+  getCommitList: function () {
+    return new Promise((resolve, reject) => {
+      let Group = Bmob.Object.extend('Group')
+      let group = new Group()
+      group.id = this.data.group.id
+      let Commit = Bmob.Object.extend('Commit')
+      let query = new Bmob.Query('Commit')
+      query.equalTo('parent', group)
+      query.include("user")
+      query.include("box")
+      query.find({
+        success: results => {
+          let today = new Date()
+          let month = (today.getMonth() + 1).toString()
+          let day = (today.getDate()).toString()
+          if (month.length == 1) month = '0' + month
+          if (day.length == 1) day = '0' + day
+          let todayString = today.getFullYear() + '-' + month + '-' + day
+
+          results = results.map(item => {
+            if (item.attributes.type === 'record') item.attributes.play = false
+            let arr = item.updatedAt.split(' ')
+            let index = item.updatedAt.indexOf(todayString)
+            if (index == -1) item.updateTime = arr[0]
+            else item.updateTime = arr[1]
+
+            return Object.assign({}, item)
+          })
+          console.log('commit列表为：', results)
+          resolve(results)
+        },
+        error: err => reject(err)
+      })
+    })
+  },
+
+  //获取用户列表
+  getUserList: function () {
+    let arr = []
+    let users = this.data.group.attributes.member
+    let count = 0
+    let User = Bmob.Object.extend('_User')
+    let query = new Bmob.Query(User)
+
+    var find = id => new Promise((resolve, reject) => {
+      query.get(id, {
+        success: result => {
+          arr.push(result)
+          resolve(result)
+        },
+        error: (object, error) => reject(error)
+      })
+    })
+
+    users.forEach(item => {
+      find(item).then(data => {
+        count++
+        if (count == users.length) {
+          this.setData({ users: arr })
+          console.log('用户列表为', this.data.users)
+        }
+      })
+    })
+  },
+
+  openSettingPin: function() {
+    this.setData({
+      settingPin: true
+    })
+  },
+
+  touchDialog: function(e) {
+    console.log(e)
+    if (e.target.id == 'create-pin-container' && e.currentTarget.id == 'create-pin-container') {
+      this.setData({settingPin: false})
+    }
+  },
+
+  createBox: function() {
+    
   }
 })

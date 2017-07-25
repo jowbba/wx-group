@@ -1,10 +1,40 @@
 <view id="group-container">
   <!--group header-->
   <scroll-view id="group-header" scroll-x='true' >
-    <view class="addpin-button">+</view>
-    <view class="">123</view>
-    <view class="">456</view>
-    <view class="">789</view>
+    <!--flex 在scroll-view里面是无效的  -->
+    <view class="flex-frame">
+      <view class="addpin-button" bindtap="openSettingPin">+</view>
+      <block wx:for='{{group.attributes.pin}}' wx:key='*this'>
+        <view class="pin">
+          <view class="pin-thumbnail"></view>
+          <text>{{item}}</text>
+        </view>  
+      </block>
+      <view class="pin">
+          <view class="pin-thumbnail"></view>
+          <text>666</text>
+        </view>  
+        <view class="pin">
+          <view class="pin-thumbnail"></view>
+          <text>555</text>
+        </view>  
+        <view class="pin">
+          <view class="pin-thumbnail"></view>
+          <text>444</text>
+        </view>  
+        <view class="pin">
+          <view class="pin-thumbnail"></view>
+          <text>333</text>
+        </view>  
+        <view class="pin">
+          <view class="pin-thumbnail"></view>
+          <text>222</text>
+        </view>  
+        <view class="pin">
+          <view class="pin-thumbnail"></view>
+          <text>111</text>
+        </view>  
+    </view>
   </scroll-view>
 
   <!--group content-->
@@ -22,7 +52,7 @@
     <image class="record" src="../../images/imc.png" mode='aspectFit' bindtouchstart="startRecord" bindtouchend="stopRecord"></image>
     <input class="text-input" bindinput="input"></input>
     <image wx:if='{{!inputValue}}' class="camera" src="../../images/camera.png" mode='aspectFit' bindtap="openCamera"></image>
-    <image wx:if='{{!inputValue}}' class="photo" src="../../images/photo.png" mode='aspectFit'></image>
+    <image wx:if='{{!inputValue}}' class="photo" src="../../images/photo.png" mode='aspectFit' bindtap="navToSetting"></image>
     <view wx:if='{{inputValue}}' class="submit" bindtap="commitText">发送</view>
   </view>
 
@@ -65,5 +95,15 @@
       <view class="vioce-stoped" wx:if='{{!attr.play}}' />
     </view>
   </template>
+
+  <view id="create-pin-container" wx:if="{{settingPin}}" bindtap="touchDialog">
+    <view class="create-pin-form">
+      <view class="pin-title">新建置顶</view>
+      <view class="pin-input-frame">
+        <input type="text" placeholder="请输入置顶名" placeholder-class='pin-input-class'/>
+        <button bindtap="createBox">确定</button>
+      </view>
+    </view>
+  </view>
 
 </view>

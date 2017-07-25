@@ -1,21 +1,14 @@
 Page {
+  width: 100%;
   height:100%;
 }
 /*layout*/
 #group-header {
+  width: 100%;
   height:96px;
   padding:16px 16px 14px;
   box-sizing:border-box;
   border-bottom: 1px solid #e5e5e5;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-
-#group-header {
-  display: inline-block;
 }
 
 #group-content {
@@ -81,15 +74,51 @@ Page {
   margin-left:10px;
 }
 /*pin*/
-#group-header view {
-  display: inline-block;
-  height: 80px;
-  line-height: 80px;
+
+.flex-frame {
+  height: 66px;
+  line-height: 66px;
+  overflow: visible;
+  display: flex;
+  flex-flow: row nowrap;
 }
 
 .addpin-button {
   width:24px;
-  
+  height: 66px;
+  line-height: 66px;
+  display: inline-block;
+  margin-right: 24px;
+}
+
+.pin {
+  width: 80px;
+  height: 66px;
+  line-height: 66px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.pin-thumbnail {
+  width: 41px;
+  height: 41px;
+  margin-bottom: 8px;
+  flex-shrink:0;
+  border:1px solid #999;
+  box-sizing: border-box;
+}
+
+.pin text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink:1;
+  font-size: 14px;
+  height: 14px;
+  line-height: 14px;  
 }
 
 /*commit*/
@@ -193,9 +222,70 @@ Page {
   height: 0px;
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
-  border-left: 10px solid #58bb20;
-  
+  border-left: 10px solid #58bb20; 
 }
+
+/*setting pin  */
+#create-pin-container {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  position: absolute;
+  top: 0px;
+  transition: all 0.3s ease-in-out;
+}
+
+.create-pin-form {
+  box-sizing: border-box;
+  width: 320px;
+  height: 172px;
+  background: white;
+  position: absolute;
+  top: 50%;
+  margin-top: -86px;
+  left: 50%;
+  margin-left: -160px;
+}
+
+.pin-title {
+  height: 48px;
+  line-height: 48px;
+  font-size: 18px;
+  color: #353535;
+  border-bottom: 1px solid #e5e5e5;
+  text-align: center;
+}
+
+.pin-input-frame {
+  height: calc(100% - 48px);
+  box-sizing: border-box;
+  padding: 14px 16px 16px;
+}
+
+.pin-input-frame input {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 14px;
+  padding-left: 12px;
+  box-sizing: border-box;
+  border: 1px solid #e5e5e5;
+}
+
+.pin-input-class {
+  font-size: 16px;
+  color: #888;
+}
+
+.pin-input-frame button {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  color: #fff;
+  background: #03a9f4;
+}
+
+
 
 
 

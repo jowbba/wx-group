@@ -5,6 +5,7 @@
     "pages/box/box",
     "pages/myBox/myBox",
     "pages/group/group",
+    "pages/groupSetting/groupSetting",
     "pages/logs/logs",
     "pages/login/login",
     "pages/commit/commit",
