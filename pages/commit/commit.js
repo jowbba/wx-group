@@ -10,7 +10,6 @@ Page({
    */
   data: {
     tempFilePaths: [],
-    photoName: '',
     commitContent: ''
   },
 
@@ -25,6 +24,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+    console.log()
     this.setData({
       tempFilePaths: app.globalData.tempFilePaths
     })
@@ -34,7 +34,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    console.log(user)
   },
 
   /**
@@ -72,21 +72,18 @@ Page({
   
   },
 
+  //输入描述
   inputCommit: function (e) {
     this.setData({ commitContent: e.detail.value })
   },
-
-  inputName: function(e) {
-    this.setData({ photoName: e.detail.value })
-  },
-
+  //预览照片
   previewImage: function(e) {
     wx.previewImage({
       current: e.currentTarget.dataset.image,
       urls: this.data.tempFilePaths,
     })
   },
-
+  //继续添加照片
   addPhoto:function() {
     let that = this
     wx.chooseImage({
@@ -103,34 +100,25 @@ Page({
 
   commit: function() {
     if (!this.data.tempFilePaths.length) return
-    let boxid = ''
     wx.showNavigationBarLoading()
     wx.showLoading({
       title: '上传中',
     })
-    let boxName = this.data.photoName
-    this.createBox(boxName, this.data.commitContent).then(result => {
-      console.log(result)
-      boxid = result.id
-      return this.uploadFiles(this.data.tempFilePaths)
-    }).then( urls => {
-      console.log(urls)
-      return this.createCommit(boxid, this.data.commitContent,urls)
-    }).then(commitResult => {
-      console.log(commitResult)
-      wx.hideNavigationBarLoading()
-      wx.hideLoading()
-      wx.showToast({
-        title: '提交成功',
-      })
-      setTimeout(() => {
-        wx.navigateBack()
-      }, 1000)
-    }).catch(e => {
-      console.log(e)
-      
-    })
 
+    this.uploadFiles(this.data.tempFilePaths).then(urls => {
+      console.log(urls)
+      return this.createCommit(this.data.commitContent, urls)
+    }).then(commitResult => {
+        console.log(commitResult)
+        wx.hideNavigationBarLoading()
+        wx.hideLoading()
+        wx.showToast({
+          title: '提交成功',
+        })
+        setTimeout(() => {
+          wx.navigateBack()
+        }, 1000)
+      }).catch(e => {console.log(e)})
   },
 
   createBox: function (name, description) {
@@ -175,29 +163,13 @@ Page({
     })
   },
 
-  createCommit: function (boxID, description, urls) {
-    return new Promise((resolve,reject) => {
-      console.log(boxID)
-      // group obj
-      let Group = Bmob.Object.extend('Group')
-      let group = new Group()
-      group.id = app.globalData.currentGroup.id
-      //box
-      let Box = Bmob.Object.extend('Box')
-      let box = new Box()
-      box.id = boxID
-      //commit obj
-      let Commit = Bmob.Object.extend("Commit")
-      let commit = new Commit()
-      commit.set('user', user)
-      commit.set('parent', group)
-      commit.set('box', box)
-      commit.set('type', 'photo')
-      commit.set('content', urls)
-      commit.set('description', this.data.commitContent)
-      commit.save({
+  createCommit: function (description, urls) {return new Promise((resolve,reject) => {
+      let userid = user.id
+      let groupid = app.globalData.currentGroup.objectId
+      let type = 'photo'
+      Bmob.Cloud.run('createCommit', { userid, groupid, urls, description, type}, {
         success: result => resolve(result),
-        error: (result, err) => reject(err)
+        error: err => reject(err)
       })
     })
   }

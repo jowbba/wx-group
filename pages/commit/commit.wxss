@@ -1,19 +1,7 @@
 /* pages/commit/commit.wxss */
-#commit-name {
-  display: flex;
-  flex-flow: row nowrap;
-  padding:0 5%;
-  margin:20px 0;
-  color: #666;
-}
-
-#commit-name label, #commit-name input {
-  height: 27px;
-  line-height: 27px;
-}
-
 #commit-container textarea {
   margin:0 auto;
+  margin-top: 20px;
 }
 
 #commit-container .photo-list {

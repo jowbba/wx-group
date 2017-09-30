@@ -1,0 +1,11 @@
+.page-frame {
+  height: 100%;
+}
+
+.file-list {
+  height: calc(100% - 50px);
+}
+
+.file-tool {
+  height: 50px;
+}

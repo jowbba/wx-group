@@ -17,7 +17,7 @@
 }
 
 .userinfo-nickname::first-letter {
-  color:red;
+  color:#03a9f4;
   font-size:50px;
 }
 

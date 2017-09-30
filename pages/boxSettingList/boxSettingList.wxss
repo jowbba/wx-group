@@ -1,0 +1,50 @@
+.page-frame {
+  background: #f4f4f4;
+  height: auto;
+  min-height:100%;
+  padding-bottom: 10px;
+}
+
+.setting-title {
+  height: 43px;
+  padding: 0 16px;
+  font-size: 14px;
+  color:#888;
+  background: #f4f4f4; 
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.setting-row {
+  height: 48px;
+  padding: 0 16px;
+  background: #fff;
+  border-top: 1px solid #999;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+
+.setting-label {
+  font-size: 16px;
+  color: #353535;
+  font-weight: 600;
+}
+
+.setting-text {
+  font-size: 14px;
+  color:#888;
+}
+
+.setting-logout {
+  box-sizing: border-box;
+  position: absolute;
+  width: 90%;
+  margin-left: 5%;
+  bottom: 10px;
+}

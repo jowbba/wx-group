@@ -9,17 +9,18 @@ Page {
 }
 
 .create-grout-icon {
-  width: 60px;
-  height: 60px;
-  font-size: 38px;
-  line-height: 60px;
-  text-align: center;
+  width: 56px;
+  height: 56px;
   position: absolute;
   bottom: 20px;
   right: 20px;
-  background: #f8bbd0;
-  color: #0277bd;
   border-radius: 50%;
+  box-shadow: 0 0 5px #666;
+}
+
+.create-grout-icon image {
+    width: 56px;
+  height: 56px;
 }
 
 .create-group-container {

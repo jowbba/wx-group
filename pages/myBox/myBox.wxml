@@ -1,2 +1,3 @@
-<!--pages/myBox/myBox.wxml-->
-<text>pages/myBox/myBox.wxml</text>
+<view class="classname">
+  
+</view>

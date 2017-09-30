@@ -20,6 +20,7 @@ Page({
       url: '../home/home'
     })
   },
+  
   onLoad: function () {
     var that = this
     app.getUserInfo((data) => {
@@ -27,6 +28,5 @@ Page({
         userInfo: app.globalData.userInfo
       })
     })
-      
   }
 })

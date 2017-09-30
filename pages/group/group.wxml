@@ -1,58 +1,47 @@
 <view id="group-container">
+  <!--toggle header -->
+  <view id="toggle-header" class='{{scrollTool?"":"hidden"}}' bindtap="toggleHeader">
+    <image src="../../images/bookmark.png"></image>
+  </view>
   <!--group header-->
-  <scroll-view id="group-header" scroll-x='true' >
+  <view id="group-header"  class='{{scrollTool?" ":"hidden"}}'>
+    <!--添加 pin  -->
+    <view class="addpin-button" bindtap="openSettingPin">
+      <image src="../../images/add.png"></image>
+      <text>创建置顶</text>
+    </view>
     <!--flex 在scroll-view里面是无效的  -->
-    <view class="flex-frame">
-      <view class="addpin-button" bindtap="openSettingPin">+</view>
-      <block wx:for='{{group.attributes.pin}}' wx:key='*this'>
-        <view class="pin">
-          <view class="pin-thumbnail"></view>
-          <text>{{item}}</text>
+    <scroll-view scroll-x='true' class="flex-frame">
+       <block wx:for='{{boxs}}' wx:key='objectId' wx:for-item='box'>
+        <view class="pin" data-id="{{box.objectId}}" bindtap="openBox">
+          <view class="{{box.commits.length==0?'pin-thumbnail empty':'pin-thumbnail'}}">
+            <block wx:for="{{box.commits}}" wx:key="*this" wx:for-item='url'>
+              <image src="{{url}}" wx:if="{{index < 4}}"></image>
+            </block>
+            <image src="../../images/star.png" wx:if="{{box.commits.length==0}}"></image>
+          </view>
+          <text>{{box.name}}</text>
         </view>  
       </block>
-      <view class="pin">
-          <view class="pin-thumbnail"></view>
-          <text>666</text>
-        </view>  
-        <view class="pin">
-          <view class="pin-thumbnail"></view>
-          <text>555</text>
-        </view>  
-        <view class="pin">
-          <view class="pin-thumbnail"></view>
-          <text>444</text>
-        </view>  
-        <view class="pin">
-          <view class="pin-thumbnail"></view>
-          <text>333</text>
-        </view>  
-        <view class="pin">
-          <view class="pin-thumbnail"></view>
-          <text>222</text>
-        </view>  
-        <view class="pin">
-          <view class="pin-thumbnail"></view>
-          <text>111</text>
-        </view>  
-    </view>
-  </scroll-view>
+    </scroll-view>
+  </view>
 
   <!--group content-->
-  <scroll-view id="group-content" scroll-y scroll-with-animation enable-back-to-top scroll-into-view='toView{{toView}}' scroll-top="0">
-    <block wx:for='{{commits}}' wx:key='id'>
-      <view class="commit-container" id='toView{{item.id}}'>
-        <template is="commit" data='{{id:item.id,url:item.attributes.user.userInfo.avatarUrl,attr:item.attributes,updateTime:item.updateTime}}' />
+  <scroll-view class='{{scrollTool?" ":"long"}}' id="group-content" scroll-y  scroll-into-view='toView{{toView}}' scroll-top="0" bindscroll="scroll">
+    <block wx:for='{{commits}}' wx:key='objectId'>
+      <view class="{{item.user.objectId == currentUserID?'commit-container myself':'commit-container'}}" id='toView{{item.objectId}}'>
+        <template is="commit" data='{{id:item.objectId,url:item.user.userInfo.avatarUrl,attr:item,currentUserID:currentUserID}}' />
       </view>
     </block>
-    <view id='bottom'></view>
   </scroll-view>
 
   <!--group footer-->
   <view id="group-footer">
     <image class="record" src="../../images/imc.png" mode='aspectFit' bindtouchstart="startRecord" bindtouchend="stopRecord"></image>
-    <input class="text-input" bindinput="input"></input>
+    <input class="text-input" cursor-spacing='10' bindinput="input" value='{{inputValue}}'></input>
     <image wx:if='{{!inputValue}}' class="camera" src="../../images/camera.png" mode='aspectFit' bindtap="openCamera"></image>
-    <image wx:if='{{!inputValue}}' class="photo" src="../../images/photo.png" mode='aspectFit' bindtap="navToSetting"></image>
+    <image wx:if='{{!inputValue}}' class="photo" src="../../images/video.png" mode='aspectFit' bindtap="navToSetting"></image>
+    <image wx:if='{{!inputValue}}' class="photo" src="../../images/setting.png" mode='aspectFit' bindtap="navToSetting"></image>
     <view wx:if='{{inputValue}}' class="submit" bindtap="commitText">发送</view>
   </view>
 
@@ -60,10 +49,13 @@
   <template name='commit'>
     <image class='commit-avatar' src="{{url}}"></image>
     <view class="commit-main">
-      <view class="commit-name">{{attr.user.username}}</view>
+      <view class="commit-user">
+        <text wx:if='{{attr.user.objectId !== currentUserID}}'>{{attr.user.username}}  </text>    
+        <text>{{attr.updateTime}}</text>
+      </view>
       <template is='{{attr.type}}' data='{{id:id,attr:attr}}'></template>
     </view>
-    <text class='commit-updateTime'>{{updateTime}}</text>
+    <text class='commit-updateTime'>{{attr.updateTime}}</text>
   </template>
 
   <!--template text-->
@@ -73,17 +65,23 @@
 
   <!--template photo-->
   <template name='photo'>
+    <!--单独的照片上传描述  -->
+    <view class="photo-description" wx:if="{{!attr.box && attr.description}}">
+      <text>{{attr.description}}</text>
+    </view>
+    <!--照片列表  -->
     <view class="commit-content photo">
       <block wx:for='{{attr.content}}' wx:key='*this'>
-        <image src="{{item}}" wx:if='{{(attr.content.length<7||(index<5))}}' data-url='{{item}}' data-id='{{id}}' bindtap="previewImage" />
+        <image src="{{item}}" mode='aspectFill' wx:if='{{(attr.content.length<7||(index<5))}}' data-url='{{item}}' data-id='{{id}}' bindtap="previewImage" />
         <view class="view-more" wx:if='{{index==5&&attr.content.length>6}}'>
-          <image src="{{item}}" data-id='{{id}}' />
+          <image src="{{item}}" data-id='{{id}}' mode='aspectFill'/>
           <view data-id='{{id}}' bindtap="openCommit">+{{attr.content.length - 5}}</view>
         </view>
       </block>
     </view>
-    <view class="photo-name">
-      <text data-id='{{id}}' bindtap="openBox">#{{attr.box.name}}</text>
+    <!--往盒子中添加照片信息  -->
+    <view class="photo-name" wx:if="{{attr.box}}">
+      <text data-id='{{attr.box.objectId}}' bindtap="openBox2">#{{attr.box.name}}</text>
       <text>中加入{{attr.content.length}}个文件</text>
     </view>
   </template>
@@ -100,7 +98,7 @@
     <view class="create-pin-form">
       <view class="pin-title">新建置顶</view>
       <view class="pin-input-frame">
-        <input type="text" placeholder="请输入置顶名" placeholder-class='pin-input-class'/>
+        <input type="text" placeholder="请输入置顶名" placeholder-class='pin-input-class' bindinput="inputBoxName"/>
         <button bindtap="createBox">确定</button>
       </view>
     </view>

@@ -8,8 +8,9 @@ Page({
    * 页面的初始数据
    */
   data: {
+    count:0,
     box: {},
-    commits: [],
+    select:[],
     setting:false
   },
 
@@ -17,19 +18,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let userid = user.id
     let boxid = options.id
-    this.getBoxInfor(boxid).then(boxInfor => {
-      console.log(boxInfor)
-      this.setData({box:boxInfor}) 
-      return this.getBoxCommits(boxid)
-    }).then(commits => {
-      let result = commits.map(item => Object.assign({},item,{check:false}))
-      console.log(result)
-      this.setData({ commits: result})
-      console.log(this)
-    }).catch(err => {
+    Bmob.Cloud.run('getBoxWithId', { userid, boxid }, {
+      success: result => {
+        let box = JSON.parse(result)
+        this.box = box
+        this.setData({ box })
+      },
+      error: err => {
         console.log(err)
-      })
+      }
+    })
   },
 
   /**
@@ -81,49 +81,39 @@ Page({
   
   },
 
-  getBoxCommits:function(id) {
-    return new Promise((resolve,reject) => {
-      let Box = Bmob.Object.extend('Box')
-      let box = new Box()
-      box.id = id
-      let Commit = Bmob.Object.extend('Commit')
-      let query = new Bmob.Query('Commit')
-      query.equalTo('box', box)
-      query.include("user")
-      query.find({
-        success: result => resolve(result),
-        error: err => reject(err)
-        
-      })
-    })
-  },
-
-  getBoxInfor:function(id) {
-    return new Promise((resolve, reject) => {
-      let Box = Bmob.Object.extend('Box')
-      let query = new Bmob.Query(Box)
-      query.get(id, {
-        success: result => resolve(result),
-        error: err => reject(err)
-      })
-    })
-  },
-
   previewImage:function(e) {
-    let commitID = e.currentTarget.dataset.id
     let url = e.currentTarget.dataset.url
-    let commit = this.data.commits.find(item => item.id == commitID)
-    let urls = commit.attributes.content
-    console.log()
-    if (urls) wx.previewImage({
-      urls: urls,
-      current:url
+    let urls = []
+    this.data.box.commits.forEach(item => urls.push(item.url))
+    if (url) wx.previewImage({
+      current: url,
+      urls
+    })
+  },
+
+  openSetting:function() {
+    wx.navigateTo({
+      url: '../boxSettingList/boxSettingList?boxid=' + this.data.box.objectId,
+    })
+  }, 
+
+  cancelSelect: function() {
+    this.box.commits.forEach(item => {
+      if(item.check) item.check = false
+    })
+    this.setData({
+      setting:false,
+      box:this.box,
+      count:0
     })
   },
 
   longtap: function(e) {
     console.log('long tap',e)
-    this.setData({setting: true})
+    if (this.data.setting) return
+    let index = e.currentTarget.dataset.index
+    this.box.commits[index].check = true
+    this.setData({setting: true, box: this.box, count:1})
   },
 
   touchStart: function(e) {
@@ -135,7 +125,15 @@ Page({
     console.log('touch end', e)
     let time = e.timeStamp - this.stamp
     console.log(time)
-    if (time < 350 ) this.previewImage(e)
-    
+    if (time < 350 && !this.data.setting ) this.previewImage(e)
+    else if (time < 350 && this.data.setting) {
+      let index = e.currentTarget.dataset.index
+      let count = this.data.count
+      if (this.box.commits[index].check) count--
+      else count++ 
+      this.box.commits[index].check = !this.box.commits[index].check
+      this.setData({ box: this.box , count})
+    }
   }
+  
 })

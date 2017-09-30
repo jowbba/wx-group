@@ -13,7 +13,6 @@ App({
   },
   getUserInfo: function (cb) {
     var that = this
-
     //调用登录接口
     wx.showNavigationBarLoading()
     wx.login({
@@ -30,6 +29,7 @@ App({
                   var userInfo = result.userInfo
                   Object.assign(that.globalData.userInfo, userInfo)
                   var currentUser = Bmob.User.current()
+                  //判断是否已经登录
                   if (currentUser) {
                     console.log('当前用户存在')
                     return cb()

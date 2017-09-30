@@ -2,24 +2,90 @@
 Page {
   width: 100%;
   height: 100%;
-  background-color: black;
 }
 
 .page-frame {
   width: 100%;
   height: 100%;
-  background-color: black;
+  position: relative;
+  background: #fafafa;
 }
 
-#box-cover {
-  height: 170px;
-  border-bottom: 1px solid white; 
+/*header  */
+#box-header {
+  height: 80px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  padding:16px 16px 0;
+  transition: all 0.5s;
+  overflow: hidden;
+  background: #fff;
+  /* border: 1px solid #e5e5e5; */
 }
 
+#box-header.setting {
+  height: 0px;
+}
+
+#box-header .description {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+#box-header .description .name {
+  font-size: 35px;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 8px;
+}
+
+#box-header .description .count {
+  height: 30px;
+  display: table-cell;
+  box-sizing: border-box;
+  max-width: 300px;
+  z-index: 999;
+  background: #fff;
+}
+
+#box-header .description .count text {
+  vertical-align: middle;
+  display: inline-block;
+  color: #888;
+  font-size: 14px;
+  max-width: 100px;
+  word-break: break-all
+}
+
+#box-header .description .count image {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  opacity: .5;
+  vertical-align: middle
+}
+
+#box-header .setting {
+  flex-grow: 0;
+  line-height: 80px;
+}
+
+#box-header .setting image {
+  width: 16px;
+  height: 16px;
+  opacity: .5;
+}
+
+/*image list  */
 #box-list {
   width: 100%;
   display: block;
   padding: 0 1vw;
+  box-sizing: border-box;
 }
 
 #box-list .image-container {
@@ -46,4 +112,103 @@ Page {
   left: 10px;
   border-radius: 50%;
   border: 1px solid #999;
+}
+
+#box-list .image-select-pointer.check {
+  background: #03a9f4;
+}
+
+/*tool  */
+#file-tool {
+    position: fixed;
+    width: 100%;
+    height: 60px;
+    background: #fff;
+    bottom: -60px;
+    /* transition: all 0.5s; */
+    border-top: 1px solid #e5e5e5;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+#file-tool.hidden {
+  bottom: 0px;
+}
+
+#file-tool view {
+  display: inline-block;
+  vertical-align: middle;
+  height: 40px;
+  line-height: 40px;
+}
+
+.cancel {
+  font-size: 14px;
+  color:#03a9f4;
+}
+
+.message {
+  font-size: 16px;
+  color: #888;
+}
+
+.delete {
+  font-size: 13px;
+  width: 60px;
+  border-radius: 3px;
+  color: #fff;
+  background: #E64340;
+  text-align: center;
+}
+
+/*add file icon  */
+
+#add-file {
+  position: fixed;
+  right: 16px;
+  bottom:56px;
+  width: 56px;
+  height: 56px;
+  line-height: 56px;
+  font-size: 26px;
+  font-weight: 500;
+  transition: all 0.5s;
+  border-radius: 50%;
+  box-shadow: 0 0 5px #666;
+}
+
+#add-file.hidden {
+  opacity: 0
+}
+
+#add-file image {
+  width: 56px;
+  height: 56px;
+}
+
+/*empty logo  */
+#empty-logo {
+  width: 75px;
+  height: 85px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -42.5px 0 0 -37.5px;
+}
+
+#empty-logo image {
+  width: 61px;
+  height: 61px;
+}
+
+#empty-logo text {
+  color: rgba(0,0,0,.38)
 }

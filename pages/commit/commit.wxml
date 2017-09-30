@@ -1,9 +1,5 @@
 <!--pages/commit/commit.wxml-->
 <view id="commit-container">
-  <view id="commit-name">
-    <label>名称:</label>
-    <input type="text" bindinput="inputName" />
-  </view>
   <textarea type='text' placeholder='这一刻的想法' bindinput='inputCommit'/>
   <view class="photo-list">
     <block wx:for='{{tempFilePaths}}' wx:key='*this'>

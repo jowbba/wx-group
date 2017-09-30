@@ -1,34 +1,30 @@
 {
   "pages": [
-    "pages/home/home",
     "pages/index/index",
+    "pages/home/home",
+    
     "pages/box/box",
-    "pages/myBox/myBox",
+    "pages/boxSetting/boxSetting",
+    "pages/boxSettingList/boxSettingList",
     "pages/group/group",
     "pages/groupSetting/groupSetting",
     "pages/logs/logs",
-    "pages/login/login",
     "pages/commit/commit",
-    "pages/commitList/commitList"
+    "pages/commitList/commitList",
+    "pages/myBox/myBox"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "wisnuc",
     "navigationBarTextStyle": "black",
-    "enablePullDownRefresh": true
+    "enablePullDownRefresh": false
   },
   "tabBar": {
     "color":"#b2b2b2",
     "selectedColor":"#353535",
     "backgroundColor": "#fff",
     "list": [
-      {
-        "pagePath": "pages/index/index",
-        "iconPath": "images/home.png",
-        "selectedIconPath": "images/home.png",
-        "text": "首页"
-      },
       {
         "pagePath": "pages/home/home",
         "iconPath": "images/box.png",
@@ -37,8 +33,8 @@
       },
       {
         "pagePath": "pages/myBox/myBox",
-        "iconPath": "images/group.png",
-        "selectedIconPath": "images/group.png",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home.png",
         "text": "盒子"
       }
     ]

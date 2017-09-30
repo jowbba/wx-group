@@ -1,19 +1,45 @@
 <!--pages/box/box.wxml-->
 <view class="page-frame">
-
-  <view id="box-cover">
-  
+  <!--description  -->
+  <view id="box-header" class='{{setting?"setting":""}}'>
+    <view class="description">
+      <view class="name">{{box.name}}</view>
+      <view class="count">
+         <image src="../../images/file.png"></image> 
+          <text>{{box.commits.length}}</text>
+      </view>
+    </view>
+    <view class="setting">
+      <image src="../../images/setting.png" mode='aspectFit' bindtap="openSetting"/>
+    </view>
+    
   </view>
 
+  <!--list  -->
   <view id="box-list">
-    <block wx:for='{{commits}}' wx:key='id' wx:for-item='commit'>
-      <block wx:if='{{commit.attributes.type == "photo"}}' wx:for='{{commit.attributes.content}}' wx:key='*this' wx:for-item='url'>
-        <view class="image-container">
-          <image src="{{url}}" data-url='{{url}}' data-id='{{commit.id}}' bindtouchstart="touchStart" bindtouchend="touchEnd" catchlongtap="longtap"/>
-          <view class="image-select-pointer"></view>
+    <block wx:for='{{box.commits}}' wx:key='url'>
+        <view class="image-container" data-index='{{index}}' data-url='{{item.url}}' bindtouchstart="touchStart" bindtouchend="touchEnd" catchlongtap="longtap">
+          <image src="{{item.url}}"/>
+          <view class="{{item.check?'image-select-pointer check':'image-select-pointer'}}"></view>
         </view>
-      </block>
     </block>
   </view>
 
+  <!--add bottom  -->
+  <view id="add-file" bindtap="upload" class="{{setting?'hidden':''}}">
+    <image src="../../images/fab1@3x.png"></image>
+  </view>
+
+  <!--empty  -->
+  <view id="empty-logo" wx:if="{{box.commits.length==0}}">
+    <image src="../../images/1122.png"></image>
+    <text>暂无数据</text>
+  </view>
+
+  <!--box tool  -->
+  <view id="file-tool" class="{{setting?'hidden':''}}">
+    <view class='cancel' bindtap="cancelSelect">取消</view>
+    <view class='message'>已选择{{count}}张照片</view>
+    <view class='delete'>删除</view>
+  </view>
 </view>

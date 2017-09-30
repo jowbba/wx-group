@@ -1,0 +1,14 @@
+<view class="page-frame">
+  <view class="setting-title">属性</view>
+  <view class="setting-row no-border">
+    <text class="setting-label">群名称</text>
+    <text class="setting-text">闻上大本营 ></text>
+  </view>
+
+  <view class="setting-row" bindtap="enterEdit">
+    <text class="setting-label">编辑置顶</text>
+    <text class="setting-text">>    </text>
+  </view>
+
+  <button class="setting-logout" type='warn'>删除</button>
+</view>
